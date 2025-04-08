@@ -28,7 +28,7 @@ jobs:
         with:
           type: now
           target_branch: main
-          message: Merge staging into uat
+          message: Merge release into main
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
  
