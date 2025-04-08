@@ -1,0 +1,46 @@
+name: Automerge
+
+on:
+ push:
+     branches:
+       - release/*
+
+# env:
+#   MY_REPO: https://github_username:${{secrets.GITHUB_TOKEN}}@github.com/mydevopsgithub/merge
+#   MY_BRANCH: main
+#   MASTER_REPO: https://github.com/mydevopsgithub/merge
+# #   MASTER_BRANCH: github.ref 
+
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_BRANCH: main
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Required for full git history
+ 
+      - name: Setup Git identity
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+ 
+      - name: Checkout default branch and merge
+        run: |
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch is $CURRENT_BRANCH"
+          
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch origin ${{ env.DEFAULT_BRANCH }}
+          git checkout ${{ env.DEFAULT_BRANCH }}
+ 
+          if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
+            echo "Merge successful. Pushing..."
+            git push origin ${{ env.DEFAULT_BRANCH }}
+          else
+            echo "Merge conflict occurred!"
+            echo "Notifying user..."
+          fi
