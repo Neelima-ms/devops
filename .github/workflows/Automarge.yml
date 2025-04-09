@@ -52,4 +52,5 @@ jobs:
           else
             echo "Merge conflict occurred!"
             echo "Notifying user..."
+            exit 1
           fi
