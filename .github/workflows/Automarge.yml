@@ -29,7 +29,7 @@ jobs:
       #     type: now
       #     target_branch: main
       #     message: Merge release into main
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     github_token: ${{ secrets.TOKEN_GITHUB }}
 
  
       - name: Setup Git identity
@@ -42,7 +42,7 @@ jobs:
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           echo "Current branch is $CURRENT_BRANCH"
           
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}
           git fetch origin ${{ env.DEFAULT_BRANCH }}
           git checkout ${{ env.DEFAULT_BRANCH }}
  
@@ -52,4 +52,5 @@ jobs:
           else
             echo "Merge conflict occurred!"
             echo "Notifying user..."
+            exit 1
           fi
