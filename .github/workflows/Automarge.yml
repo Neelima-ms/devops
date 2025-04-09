@@ -23,33 +23,33 @@ jobs:
         with:
           fetch-depth: 0  # Required for full git history
 
-      - name: Merge release
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          target_branch: main
-          message: Merge release into main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Merge release
+      #   uses: devmasx/merge-branch@master
+      #   with:
+      #     type: now
+      #     target_branch: main
+      #     message: Merge release into main
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
 
  
-      # - name: Setup Git identity
-      #   run: |
-      #     git config user.name "GitHub Actions"
-      #     git config user.email "actions@github.com"
+      - name: Setup Git identity
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
  
-      # - name: Checkout default branch
-      #   run: |
-      #     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-      #     echo "Current branch is $CURRENT_BRANCH"
+      - name: Checkout default branch
+        run: |
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch is $CURRENT_BRANCH"
           
-      #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-      #     git fetch origin ${{ env.DEFAULT_BRANCH }}
-      #     git checkout ${{ env.DEFAULT_BRANCH }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch origin ${{ env.DEFAULT_BRANCH }}
+          git checkout ${{ env.DEFAULT_BRANCH }}
  
-      #     if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
-      #       echo "Merge successful. Pushing..."
-      #       git push origin ${{ env.DEFAULT_BRANCH }}
-      #     else
-      #       echo "Merge conflict occurred!"
-      #       echo "Notifying user..."
-      #     fi
+          if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
+            echo "Merge successful. Pushing..."
+            git push origin ${{ env.DEFAULT_BRANCH }}
+          else
+            echo "Merge conflict occurred!"
+            echo "Notifying user..."
+          fi
