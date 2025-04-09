@@ -9,7 +9,7 @@ on:
 #   MY_REPO: https://github_username:${{secrets.GITHUB_TOKEN}}@github.com/mydevopsgithub/merge
 #   MY_BRANCH: main
 #   MASTER_REPO: https://github.com/mydevopsgithub/merge
-# #   MASTER_BRANCH: github.ref 
+# #   MASTER_BRANCH: github.ref
 
 
 jobs:
