@@ -5,6 +5,7 @@ on:
   pull_request:
      types: 
       - opened
+      - labeled
 
 jobs:
   automerge:
@@ -16,7 +17,6 @@ jobs:
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.16.4"
-        with:
-          lables: automerge
-          github_token: "${{ secrets.TOKEN_GITHUB }}"
+        env:
+          GITHUB_TOKEN: "${{ secrets.TOKEN_GITHUB }}"
      
