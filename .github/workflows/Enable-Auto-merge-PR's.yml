@@ -1,4 +1,4 @@
-name: Enable automergePRs
+name: Enable automerge PRs
 
 on:
   # See note below about using pull_request_target
