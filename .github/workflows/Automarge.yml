@@ -48,12 +48,12 @@ jobs:
 
       - name: Create PR 
         run: |
-            git merge --no-ff $CURRENT_BRANCH -m "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}"
+            git merge --no-ff ${{ env.CURRENT_BRANCH }} -m "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}"
             echo "creating PR"
             gh pr create \
               --base "${{ env.DEFAULT_BRANCH }}" \
-              --head "$CURRENT_BRANCH" \
-              --title "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}" \
+              --head "${{ env.CURRENT_BRANCH }}" \
+              --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
               --body "Automated pull request created by Github Actions"
         env:
            GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
