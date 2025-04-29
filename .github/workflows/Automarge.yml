@@ -57,12 +57,12 @@ jobs:
         if: steps.auto_merge.outputs.merge_status == 'success'
         run: |
             echo "creating PR"
-            PR_NUMBER=$(gh pr create \
+            PR_URL=$(gh pr create \
               --base "${{ env.DEFAULT_BRANCH }}" \
               --head "${{ env.CURRENT_BRANCH }}" \
               --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
-              --body "Automated pull request created by Github Actions" \
-              --json number -q '.number')
+              --body "Automated pull request created by Github Actions")
+            PR_NUMBER=$( echo $PR_URL | grep -oP '\d+$' )
             echo "Merge Pull request"
             gh pr merge $PR_NUMBER --auto --merge 
         env:
