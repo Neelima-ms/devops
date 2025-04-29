@@ -38,6 +38,7 @@ jobs:
           git config user.email "actions@github.com"
  
       - name: Checkout default branch
+        id: auto_merge
         run: |
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           echo "Current branch is $CURRENT_BRANCH"
