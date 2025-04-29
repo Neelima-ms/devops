@@ -63,10 +63,23 @@ jobs:
               --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
               --body "Automated pull request created by Github Actions")
             PR_NUMBER=$( echo $PR_URL | grep -oP '\d+$' )
-            echo "Merge Pull request"
-            gh pr merge $PR_NUMBER --auto --merge 
         env:
            GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+
+      - name: Enable automerge on dependabot PRs
+        uses: daneden/enable-automerge-action@v1
+        with:
+          # A personal access token that you have generated and saved in the
+          # repo or org’s encrypted secrets
+          github-token: ${{ secrets.TOKEN_GITHUB }}
+
+          # The name of the PR author to enable automerge for
+          # Defaults to dependabot[bot]
+          allowed-author: "dependabot[bot]"
+
+          # Allowed values: MERGE | SQUASH | REBASE
+          # Defaults to MERGE
+          merge-method: MERGE
      
       # - name: auto-merge PR
       #   run: |
