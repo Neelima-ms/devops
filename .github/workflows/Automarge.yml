@@ -60,7 +60,7 @@ jobs:
             PR_URL=$(gh pr create \
               --base "${{ env.DEFAULT_BRANCH }}" \
               --head "${{ env.CURRENT_BRANCH }}" \
-              --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
+              --title "automerge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
               --body "Automated pull request created by Github Actions")
             PR_NUMBER=$( echo $PR_URL | grep -oP '\d+$' )
         env:
