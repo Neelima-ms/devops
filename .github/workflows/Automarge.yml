@@ -47,7 +47,7 @@ jobs:
           git fetch origin ${{ env.DEFAULT_BRANCH }}
           git checkout ${{ env.DEFAULT_BRANCH }}
  
-          if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
+          if git merge --no-ff ${{ env.CURRENT_BRANCH }} -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
             echo "merge_status=success" >> $GITHUB_OUTPUT   
           else
             echo "merge_status=conflict" >> $GITHUB_OUTPUT  
