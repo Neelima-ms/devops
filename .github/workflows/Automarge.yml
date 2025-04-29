@@ -45,23 +45,31 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}
           git fetch origin ${{ env.DEFAULT_BRANCH }}
           git checkout ${{ env.DEFAULT_BRANCH }}
+ 
+          if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
+            echo "merge_status=success" >> $GITHUB_OUTPUT   
+          else
+            echo "merge_status=conflict" >> $GITHUB_OUTPUT  
+          fi
 
       - name: Create PR 
+        if: steps.auto_merge.outputs.merge_status == 'success'
         run: |
-            git merge --no-ff ${{ env.CURRENT_BRANCH }} -m "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}"
             echo "creating PR"
             gh pr create \
               --base "${{ env.DEFAULT_BRANCH }}" \
               --head "${{ env.CURRENT_BRANCH }}" \
               --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
               --body "Automated pull request created by Github Actions"
-        env:
-           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
-     
-      - name: auto-merge PR
-        run: |
             echo "Merge Pull request"
             gh pr merge --auto --merge
         env:
-         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+     
+      # - name: auto-merge PR
+      #   run: |
+      #       echo "Merge Pull request"
+      #       gh pr merge --auto --merge
+      #   env:
+      #    GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
     
