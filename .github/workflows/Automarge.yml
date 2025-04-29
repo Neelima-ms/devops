@@ -48,7 +48,7 @@ jobs:
 
       - name: Create PR 
         run: |
-            git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"
+            git merge --no-ff $CURRENT_BRANCH -m "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}"
             echo "creating PR"
             gh pr create \
               --base "${{ env.DEFAULT_BRANCH }}" \
