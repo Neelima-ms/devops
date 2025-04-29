@@ -41,7 +41,7 @@ jobs:
         id: auto_merge
         run: |
           echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-          echo "Current branch is $CURRENT_BRANCH"
+          echo "Current branch is ${{ env.CURRENT_BRANCH }}"
           
           git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}
           git fetch origin ${{ env.DEFAULT_BRANCH }}
