@@ -63,7 +63,7 @@ jobs:
               --title "Auto-merge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
               --body "Automated pull request created by Github Actions"
             echo "Merge Pull request"
-            gh pr merge --auto --merge
+            gh pr merge --auto --merge --head "${{ env.CURRENT_BRANCH }}"
         env:
            GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
      
