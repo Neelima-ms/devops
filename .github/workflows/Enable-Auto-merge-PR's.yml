@@ -3,8 +3,22 @@ name: Enable automerge PRs
 on:
   # See note below about using pull_request_target
   pull_request:
-     types: 
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
       - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
 
 jobs:
   automerge:
@@ -13,10 +27,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Enable automerge on dependabot PRs
-        uses: daneden/enable-automerge-action@v1
-        with:
-          github-token: "${{ secrets.TOKEN_GITHUB }}"
-          allowed-author: ${{ github.actor }}
-          merge-method: MERGE
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.16.4"
+        env:
+          GITHUB_ENV: "${{ secrets.TOKEN_GITHUB }}"
      
