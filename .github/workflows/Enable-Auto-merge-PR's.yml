@@ -1,4 +1,4 @@
-name: Enable automerge PRs
+name: Enable automerge PR
 
 on:
   # See note below about using pull_request_target
@@ -31,5 +31,5 @@ jobs:
         name: automerge
         uses: "pascalgn/automerge-action@v0.16.4"
         env:
-          GITHUB_ENV: "${{ secrets.TOKEN_GITHUB }}"
+          GITHUB_TOKEN: "${{ secrets.TOKEN_GITHUB }}"
      
