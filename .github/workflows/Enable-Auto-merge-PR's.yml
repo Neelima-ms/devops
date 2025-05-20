@@ -6,6 +6,7 @@ on:
     types:
       - labeled
       - unlabeled
+      - synchronize
       - opened
 
   pull_request_review:
