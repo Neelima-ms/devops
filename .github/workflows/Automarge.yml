@@ -38,19 +38,38 @@ jobs:
           git config user.email "actions@github.com"
  
       - name: Checkout default branch
+        id: auto_merge
         run: |
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "Current branch is $CURRENT_BRANCH"
+          echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "Current branch is ${{ env.CURRENT_BRANCH }}"
           
           git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}
           git fetch origin ${{ env.DEFAULT_BRANCH }}
           git checkout ${{ env.DEFAULT_BRANCH }}
  
-          if git merge --no-ff $CURRENT_BRANCH -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
-            echo "Merge successful. Pushing..."
-            git push origin ${{ env.DEFAULT_BRANCH }}
+          if git merge --no-ff ${{ env.CURRENT_BRANCH }} -m "Auto-merge $CURRENT_BRANCH into ${{ env.DEFAULT_BRANCH }}"; then
+            echo "merge_status=success" >> $GITHUB_OUTPUT   
           else
-            echo "Merge conflict occurred!"
-            echo "Notifying user..."
-            exit 1
+            echo "merge_status=conflict" >> $GITHUB_OUTPUT  
           fi
+
+      - name: Create PR 
+        if: steps.auto_merge.outputs.merge_status == 'success'
+        run: |
+            echo "creating PR"
+            PR_URL=$(gh pr create \
+              --base "${{ env.DEFAULT_BRANCH }}" \
+              --head "${{ env.CURRENT_BRANCH }}" \
+              --title "automerge ${{ env.CURRENT_BRANCH }} into ${{ env.DEFAULT_BRANCH }}" \
+              --body "Automated pull request created by Github Actions")
+            PR_NUMBER=$( echo $PR_URL | grep -oP '\d+$' )
+        env:
+           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+     
+      # - name: auto-merge PR
+      #   run: |
+      #       echo "Merge Pull request"
+      #       gh pr merge --auto --merge
+      #   env:
+      #    GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+    
